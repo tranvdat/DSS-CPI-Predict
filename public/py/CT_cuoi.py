@@ -11,7 +11,7 @@ import math
 import os
 
 
-data = pd.read_csv('C:/xampp/htdocs/DSS/storage/app/CPI.csv')
+data = pd.read_csv('C:/xampp/htdocs/DSS-CPI-Predict/storage/app/CPI.csv')
 
 #chọn cột date và sales để dự đoán
 data=data[['date_time','cpi']]

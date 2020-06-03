@@ -68,9 +68,9 @@ class DashboardController extends Controller
         //cpi dự đoán trong 6 tháng tới
         $month_end_ = $this->data->orderBy('id', 'desc')->select('date_time')->get();
         $month_end = [];
-        if (file_exists('C:/xampp/htdocs/DSS/public/py/Results/predict_six_month.text')) {
+        if (file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_six_month.text')) {
 
-            $read = file('C:/xampp/htdocs/DSS/public/py/Results/predict_six_month.text');
+            $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_six_month.text');
             $k = 1;
             foreach ($read as $line) {
                 $month_end[] = [
@@ -120,7 +120,7 @@ class DashboardController extends Controller
 
         Excel::store(new Exports, 'CPI.csv');
         ini_set('max_execution_time', 300);
-        shell_exec('python C:\xampp\htdocs\DSS\public\py\CT_cuoi.py');
+        shell_exec('python C:\xampp\htdocs\DSS-CPI-Predict\public\py\CT_cuoi.py');
         $count = DB::table('data')->count();
         $train = round($count * 0.75);
 
@@ -142,7 +142,7 @@ class DashboardController extends Controller
                 ]);
             }
 
-            $path = "C:/xampp/htdocs/DSS/public/py/Results/CPI_predict.csv";
+            $path = "C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/CPI_predict.csv";
             Excel::import(new ImportDataPredicts, $path);
             DB::commit();
             return response()->json([

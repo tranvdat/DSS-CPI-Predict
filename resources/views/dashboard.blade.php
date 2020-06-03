@@ -10,7 +10,7 @@
     <!-- /.content-header -->
 
     <div class="content">
-        @if(!file_exists('C:/xampp/htdocs/DSS/public/py/Results/chuoi_dung.text') || $data == null)
+        @if(!file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/chuoi_dung.text') || $data == null)
         <h3>Chưa có dữ liệu! Nhấn <a href="{{route('data')}}">vào đây!</a></h3>
 
 
@@ -57,7 +57,7 @@
                             <label>Augmented Dickey-Fuller:</label>
                             <br>
                             <?php
-          $read = file('C:/xampp/htdocs/DSS/public/py/Results/chuoi_dung.text');
+          $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/chuoi_dung.text');
           foreach ($read as $line) {
             echo "Value: ". $line ."<br>";
           }
@@ -66,7 +66,7 @@
                             <label>Sai Số:</label>
                             <br>
                             <?php
-          $read = file('C:/xampp/htdocs/DSS/public/py/Results/saiso.text');
+          $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/saiso.text');
           foreach ($read as $line) {
             echo "". $line ."<br>";
           }
