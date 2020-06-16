@@ -82,8 +82,7 @@ $(function () {
             zeroLineColor: 'transparent'
           },
           ticks: $.extend({
-            beginAtZero: true,
-            suggestedMax: 2.5
+            beginAtZero: false,
           }, ticksStyle)
         }],
         xAxes: [{

@@ -43,34 +43,25 @@ class DashboardController extends Controller
 
             $getID_data_predict = $data_predict_[$haf_count]->id;
 
-            $data = $this->data->where('id', '>', $getID_data)->get();
+            $data = $this->data->where('id', '>', $getID_data + 1)->get();
             $month_ = $this->data->where('id', '=', $getID_data)->value('date_time');
             // $month_ = \DateTime::createFromFormat("Y-m", $month_)->format('m-Y');
             $month = [];
-            for ($i = 1; $i < $haf_count + 6; $i++) {
-                $month__ = Carbon::parse($month_)->addMonths($i)->format('m-Y');
+            for ($i = 1; $i < $haf_count + 12; $i++) {
+                $month__ = Carbon::parse($month_)->addMonths($i + 1)->format('m-Y');
                 $month[] = [
                     'date_time' => $month__,
                 ];
             }
             $data_predict = $this->datapredict->where('id', '>', $getID_data_predict)->get();
-            $train = round($count * 0.75);
-            $test = $count - $train;
-
-            for ($i = 1; $i < $count; $i++) {
-                if ($i < $train)
-                    $data_train[] = $data_[$i];
-                else
-                    $data_test[] = $data_[$i];
-            }
         }
 
         //cpi dự đoán trong 6 tháng tới
         $month_end_ = $this->data->orderBy('id', 'desc')->select('date_time')->get();
         $month_end = [];
-        if (file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_six_month.text')) {
+        if (file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_of_year.text')) {
 
-            $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_six_month.text');
+            $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/predict_of_year.text');
             $k = 1;
             foreach ($read as $line) {
                 $month_end[] = [
@@ -82,75 +73,14 @@ class DashboardController extends Controller
         }
 
 
-        return view('dashboard', compact('month_end', 'month', 'data', 'data_predict', 'data_train', 'data_test'));
+        return view('dashboard', compact('month_end', 'month', 'data', 'data_predict'));
     }
-    public function getData()
+    public function getTrend()
     {
-        $data = DB::table('data')->get();
-        return view('data', compact('data'));
+        return view('trend');
     }
-    public function postData(Request $request)
+    public function getSuggest()
     {
-        try {
-            if ($request->hasFile('file')) {
-                DB::beginTransaction();
-                $listCPI = DB::table('data')->get();
-                foreach ($listCPI as $key => $value) {
-                    $this->data->findOrfail($value->id)->delete();
-                }
-                $path1 = $request->file('file')->storeAs(
-                    'file',
-                    'CPI.csv'
-                );
-                $path = storage_path('app') . '/' . $path1;
-                Excel::import(new Imports, $path);
-                DB::commit();
-                return back();
-            } else {
-                return back()->with('thatbai', 'Chưa có file');
-            }
-        } catch (Exception $e) {
-            DB::rollBack();
-            return back();
-        }
-    }
-
-    public function getPredict()
-    {
-
-        Excel::store(new Exports, 'CPI.csv');
-        ini_set('max_execution_time', 300);
-        shell_exec('python C:\xampp\htdocs\DSS-CPI-Predict\public\py\CT_cuoi.py');
-        $count = DB::table('data')->count();
-        $train = round($count * 0.75);
-
-        $data = DB::table('data')->get();
-
-
-        try {
-            DB::beginTransaction();
-            $listCPI_predict = DB::table('data_predicts')->get();
-            foreach ($listCPI_predict as $key => $value) {
-                $this->datapredict->findOrfail($value->id)->delete();
-            }
-            for ($i = 0; $i < $train - 1; $i++) {
-                $data_predict[] = $data[$i];
-            }
-            foreach ($data_predict as $item) {
-                $this->datapredict->create([
-                    'cpi' => $item->cpi
-                ]);
-            }
-
-            $path = "C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/CPI_predict.csv";
-            Excel::import(new ImportDataPredicts, $path);
-            DB::commit();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success'
-            ], 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-        }
+        return view('suggest');
     }
 }

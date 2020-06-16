@@ -73,7 +73,7 @@
 
 @section('js')
 {{-- sweetalert2  --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="vendor/sweetalert/sweetalert2@9.js"></script>
 <!-- DataTables -->
 <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>

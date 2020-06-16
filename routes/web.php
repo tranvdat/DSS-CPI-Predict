@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('dashboard', 'DashboardController@getDashboard')->name('dashboard');
-Route::get('data', 'DashboardController@getData')->name('data');
-Route::post('data', 'DashboardController@postData')->name('postdata');
-Route::get('predict', 'DashboardController@getPredict')->name('predict');
+Route::get('trend', 'DashboardController@getTrend')->name('trend');
+Route::get('suggest', 'DashboardController@getSuggest')->name('suggest');
+Route::get('data', 'DataController@getData')->name('data');
+Route::post('data', 'DataController@postData')->name('postdata');
+Route::get('predict', 'PredictController@getPredict')->name('predict');
 
 
 Route::get('', 'UserController@getLogin')->name('login');

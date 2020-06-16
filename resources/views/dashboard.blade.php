@@ -10,11 +10,34 @@
     <!-- /.content-header -->
 
     <div class="content">
-        @if(!file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/chuoi_dung.text') || $data == null)
+        @if(!file_exists('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/saiso.text') || $data == null)
         <h3>Chưa có dữ liệu! Nhấn <a href="{{route('data')}}">vào đây!</a></h3>
 
 
         @else
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{{route('dashboard')}}">Kết Quả</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('trend')}}">Xu Hướng<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('suggest')}}">Gợi Ý</a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+
+
+
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-10">
@@ -32,7 +55,7 @@
                                 <p class="ml-auto d-flex flex-column text-right">
                                 </p>
                             </div>
-                            <!-- /.d-flex -->
+
                             <div class="position-relative mb-4">
                                 <canvas id="visitors-chart" height="400" data-root="{{$data}}"
                                     data-predict="{{$data_predict}}" data-month="{{json_encode($month)}}"></canvas>
@@ -54,15 +77,6 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <label>Augmented Dickey-Fuller:</label>
-                            <br>
-                            <?php
-          $read = file('C:/xampp/htdocs/DSS-CPI-Predict/public/py/Results/chuoi_dung.text');
-          foreach ($read as $line) {
-            echo "Value: ". $line ."<br>";
-          }
-          ?>
-                            <hr>
                             <label>Sai Số:</label>
                             <br>
                             <?php
@@ -72,7 +86,7 @@
           }
           ?>
                             <hr>
-                            <label>CPI 6 tháng tới:</label>
+                            <label>CPI 12 tháng tới:</label>
                             <br>
                             @foreach($month_end as $item )
                             {{$item['date_time']}} : {{$item['value']}}
@@ -82,63 +96,6 @@
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <br>
-                            <h3 class="card-title">CPI Train:</h3>
-                        </div>
-                        <div class="card-body">
-                            <table id="table_train" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Date Time</th>
-                                        <th>CPI</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($data_train as $item)
-                                    <tr>
-                                        <td>{{$loop -> index +1}}</td>
-                                        <td>{{$item -> date_time}}</td>
-                                        <td>{{$item -> cpi}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <br>
-                            <h3 class="card-title">CPI Test:</h3>
-                        </div>
-                        <div class="card-body">
-                            <table id="table_predict" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Date Time</th>
-                                        <th>CPI</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($data_test as $item)
-                                    <tr>
-                                        <td>{{$loop -> index +1}}</td>
-                                        <td>{{$item -> date_time}}</td>
-                                        <td>{{$item -> cpi}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         @endif

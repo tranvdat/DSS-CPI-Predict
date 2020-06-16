@@ -3,3 +3,9 @@
 	max-height: 800px;
 	object-fit: cover;
 }
+.image_trend{
+    max-width: 600px;
+    min-width: 600px;
+    max-height: 455px;
+    min-height: 455px;
+}
